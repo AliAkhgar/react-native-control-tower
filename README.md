@@ -106,41 +106,13 @@ console.log(`Status: ${statusTitle}, Active VPN: ${activeVPN}`);
 
 ## 📚 Complete Usage Guide
 
-### 🎯 Supported VPN Protocols
-
-Control Tower supports these VPN protocols out of the box:
-
-- **WireGuard** - Modern, fast, and secure VPN protocol
-- **OpenVPN** - Industry-standard VPN protocol
-- **IKEv2** - Internet Key Exchange version 2
-- **OpenConnect** - SSL VPN client
-- **L2TP** - Layer 2 Tunneling Protocol
-- **PPTP** - Point-to-Point Tunneling Protocol
-- **SSTP** - Secure Socket Tunneling Protocol
-- **SoftEther** - Multi-protocol VPN software
-- **V2Ray** - Platform for building proxies
-- **SSH** - Secure Shell tunneling
-- **SingBox** - Universal proxy platform
-
-### 🔗 Connection States
-
-```javascript
-import { ConnectionStatus } from '@aliakhgar1/react-native-control-tower';
-
-// Available connection states:
-ConnectionStatus.DISCONNECTED  // '0' - Not connected
-ConnectionStatus.DISCONNECTING // '1' - Disconnecting
-ConnectionStatus.CONNECTING    // '2' - Connecting
-ConnectionStatus.CONNECTED     // '3' - Connected
-ConnectionStatus.INVALID       // '-1' - Invalid state
-ConnectionStatus.ERROR         // '-2' - Error occurred
-```
-
 ### 📡 Integration with VPN Libraries
 
 Here's how to integrate with popular VPN libraries:
 
-#### WireGuard Integration
+#### Connection Status Natively Compatible Event Integration
+
+Here, Wireguard addWireguardStateChangeListener sends the compatible types to Control Tower by default.
 
 ```javascript
 import * as Wireguard from 'react-native-wireguard';
@@ -155,7 +127,9 @@ const WGSub = Wireguard.addWireguardStateChangeListener((WGState) => {
 // WGSub.remove();
 ```
 
-#### OpenVPN Integration
+#### Abstract Event Data Integration
+
+In this case, you will need to convert the VPN client status to a compatible status which Control Tower accepts.
 
 ```javascript
 import OpenVPN from 'react-native-openvpn';
@@ -181,6 +155,40 @@ OpenVPN.addVpnStateListener((state) => {
   ControlTower.updateVpnStatus('OpenVPN', controlTowerState);
 });
 ```
+
+
+### 🎯 Supported VPN Protocols
+
+Control Tower supports these VPN protocols out of the box:
+
+- **WireGuard** - Modern, fast, and secure VPN protocol
+- **OpenVPN** - Industry-standard VPN protocol
+- **IKEv2** - Internet Key Exchange version 2
+- **OpenConnect** - SSL VPN client
+- **L2TP** - Layer 2 Tunneling Protocol
+- **PPTP** - Point-to-Point Tunneling Protocol
+- **SSTP** - Secure Socket Tunneling Protocol
+- **SoftEther** - Multi-protocol VPN software
+- **V2Ray** - Platform for building proxies
+- **SSH** - Secure Shell tunneling
+- **SingBox** - Universal proxy platform
+
+### 🔗 Connection States
+
+This is the map of compatible statues which Control Tower accepts and sends back as status.
+
+```javascript
+import { ConnectionStatus } from '@aliakhgar1/react-native-control-tower';
+
+// Available connection states:
+ConnectionStatus.DISCONNECTED  // '0' - Not connected
+ConnectionStatus.DISCONNECTING // '1' - Disconnecting
+ConnectionStatus.CONNECTING    // '2' - Connecting
+ConnectionStatus.CONNECTED     // '3' - Connected
+ConnectionStatus.INVALID       // '-1' - Invalid state
+ConnectionStatus.ERROR         // '-2' - Error occurred
+```
+
 
 
 ### 🔧 Standalone Functions
