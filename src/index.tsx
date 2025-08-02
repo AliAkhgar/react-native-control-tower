@@ -13,6 +13,7 @@ type VpnType =
   | 'V2Ray'
   | 'SSH'
   | 'SingBox';
+
 export enum ConnectionStatus {
   DISCONNECTED = '0',
   DISCONNECTING = '1',
