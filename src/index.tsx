@@ -11,7 +11,8 @@ type VpnType =
   | 'SSTP'
   | 'SoftEther'
   | 'V2Ray'
-  | 'SSH';
+  | 'SSH'
+  | 'SingBox';
 export enum ConnectionStatus {
   DISCONNECTED = '0',
   DISCONNECTING = '1',
@@ -37,6 +38,7 @@ let _vpnStatuses: VpnStatuses = {
   SoftEther: ConnectionStatus.DISCONNECTED,
   V2Ray: ConnectionStatus.DISCONNECTED,
   SSH: ConnectionStatus.DISCONNECTED,
+  SingBox: ConnectionStatus.DISCONNECTED,
 };
 
 function notify() {
