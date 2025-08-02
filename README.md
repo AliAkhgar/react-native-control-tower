@@ -4,7 +4,7 @@
 
 ![Gemini_Generated_Image_yivo3gyivo3gyivo-2](https://github.com/user-attachments/assets/a065a676-70b0-4bab-b996-a23ead24bc88)
 
-*VPN Control & Monitoring Solution for React Native*
+*VPN Control & Monitoring for React Native*
 
 </div>
 
@@ -229,74 +229,6 @@ console.log('All Statuses:', allStatuses);
 }
 */
 ```
-
-### 🎨 Advanced Usage Patterns
-
-#### Multi-Protocol Dashboard
-
-```javascript
-import React from 'react';
-import { ScrollView, View, Text, TouchableOpacity } from 'react-native';
-import * as ControlTower from '@aliakhgar1/react-native-control-tower';
-
-function MultiProtocolDashboard() {
-  const { VPNStatuses, updateVpnStatus } = ControlTower.useVpnStatuses();
-
-  const protocols = [
-    { name: 'WireGuard', icon: '🔐', color: '#FF6B6B' },
-    { name: 'OpenVPN', icon: '🛡️', color: '#4ECDC4' },
-    { name: 'IKEv2', icon: '⚡', color: '#45B7D1' },
-    { name: 'V2Ray', icon: '🚀', color: '#96CEB4' },
-  ];
-
-  const toggleConnection = (protocol) => {
-    const currentStatus = VPNStatuses[protocol];
-    const newStatus = currentStatus === ControlTower.ConnectionStatus.CONNECTED 
-      ? ControlTower.ConnectionStatus.DISCONNECTED
-      : ControlTower.ConnectionStatus.CONNECTED;
-    
-    updateVpnStatus(protocol, newStatus);
-  };
-
-  return (
-    <ScrollView style={{ flex: 1, padding: 16 }}>
-      <Text style={{ fontSize: 28, fontWeight: 'bold', textAlign: 'center', marginBottom: 32 }}>
-        🗼 VPN Control Tower
-      </Text>
-      
-      {protocols.map((protocol) => (
-        <TouchableOpacity
-          key={protocol.name}
-          onPress={() => toggleConnection(protocol.name)}
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            padding: 16,
-            marginVertical: 8,
-            backgroundColor: protocol.color,
-            borderRadius: 12,
-          }}
-        >
-          <Text style={{ fontSize: 24, marginRight: 12 }}>{protocol.icon}</Text>
-          <View style={{ flex: 1 }}>
-            <Text style={{ fontSize: 18, fontWeight: 'bold', color: 'white' }}>
-              {protocol.name}
-            </Text>
-            <Text style={{ color: 'white', opacity: 0.8 }}>
-              {VPNStatuses[protocol.name] === ControlTower.ConnectionStatus.CONNECTED 
-                ? 'Connected' : 'Disconnected'}
-            </Text>
-          </View>
-          <Text style={{ fontSize: 20 }}>
-            {VPNStatuses[protocol.name] === ControlTower.ConnectionStatus.CONNECTED ? '🟢' : '🔴'}
-          </Text>
-        </TouchableOpacity>
-      ))}
-    </ScrollView>
-  );
-}
-```
-
 
 ## 📖 API Reference
 
