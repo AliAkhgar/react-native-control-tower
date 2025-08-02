@@ -1,5 +1,5 @@
 {
-  "name": "react-native-control-tower",
+  "name": "@aliakhgar1/react-native-control-tower",
   "version": "1.0.0",
   "description": "Control Tower",
   "main": "./lib/module/index.js",
