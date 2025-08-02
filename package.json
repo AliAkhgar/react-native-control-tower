@@ -1,7 +1,7 @@
 {
   "name": "@aliakhgar1/react-native-control-tower",
-  "version": "1.0.0",
-  "description": "Control Tower",
+  "version": "1.2.0",
+  "description": "Control Tower for VPN Applications",
   "main": "./lib/module/index.js",
   "types": "./lib/typescript/src/index.d.ts",
   "exports": {

@@ -87,6 +87,14 @@ export function getVpnConnectionStatusTitle(): string | undefined {
       : getKeyName(ConnectionStatus.DISCONNECTED);
 }
 
+//get connected vpn type
+export function getConnectedVpnType(): VpnType | undefined {
+  const statuses = getVpnStatuses();
+  return Object.keys(statuses).find(
+    (key) => statuses[key as VpnType] === ConnectionStatus.CONNECTED
+  ) as VpnType | undefined;
+}
+
 // --- REACT HOOK ---
 export function useVpnStatuses() {
   const [VPNStatuses, setVPNStatuses] = useState<VpnStatuses>(() =>
@@ -114,10 +122,15 @@ export function useVpnStatuses() {
     return getVpnConnectionStatusTitle();
   }, [VPNStatuses]);
 
+  const connectedVpnType = useMemo(() => {
+    return getConnectedVpnType();
+  }, [VPNStatuses]);
+
   return {
     VPNStatuses,
     VPNStatus,
     VPNStatusTitle,
+    connectedVpnType,
     updateVpnStatus: update,
     getVpnStatuses: get,
   };
