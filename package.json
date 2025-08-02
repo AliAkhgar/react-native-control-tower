@@ -38,7 +38,8 @@
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "clean": "del-cli lib",
     "prepare": "bob build",
-    "release": "release-it --only-version"
+    "release": "release-it --only-version",
+    "semantic-release": "semantic-release"
   },
   "keywords": [
     "react-native",
@@ -56,7 +57,8 @@
   },
   "homepage": "https://github.com/AliAkhgar/react-native-control-tower#readme",
   "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
   },
   "devDependencies": {
     "@commitlint/config-conventional": "^19.6.0",
@@ -80,6 +82,7 @@
     "react-native": "0.79.5",
     "react-native-builder-bob": "^0.40.8",
     "release-it": "^17.10.0",
+    "semantic-release": "^24.2.7",
     "typescript": "^5.8.3"
   },
   "peerDependencies": {
