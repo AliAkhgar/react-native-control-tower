@@ -300,86 +300,15 @@ function MultiProtocolDashboard() {
 
 ## 📖 API Reference
 
-### Hooks
+For complete API documentation including hooks, functions, types, and usage examples, see:
 
-#### `useVpnStatuses()`
+👉 **[API Reference](./API_REFERENCE.md)**
 
-Returns an object with the following properties:
-
-| Property | Type | Description |
-|----------|------|-------------|
-| `VPNStatuses` | `Record<VpnType, ConnectionStatus>` | Object containing all VPN statuses |
-| `VPNStatus` | `ConnectionStatus` | connection status type |
-| `VPNStatusTitle` | `string \| undefined` | Human-readable status title |
-| `connectedVpnType` | `VpnType \| undefined` | Currently connected VPN protocol |
-| `updateVpnStatus` | `Function` | Function to update VPN status |
-| `getVpnStatuses` | `Function` | Function to get all VPN statuses |
-
-### Functions
-
-#### `updateVpnStatus(vpnType, status)`
-
-Updates the status of a specific VPN protocol.
-
-**Parameters:**
-- `vpnType`: `VpnType` - The VPN protocol type
-- `status`: `ConnectionStatus` - The new connection status
-
-#### `getVpnStatuses()`
-
-Returns all VPN statuses as an object.
-
-**Returns:** `Record<VpnType, ConnectionStatus>`
-
-#### `getVpnConnectionStatus()`
-
-Gets the overall connection status across all VPN protocols.
-
-**Returns:** `ConnectionStatus`
-
-#### `getVpnConnectionStatusTitle()`
-
-Gets the human-readable title for the current connection status.
-
-**Returns:** `string | undefined`
-
-#### `getConnectedVpnType()`
-
-Gets the currently connected VPN protocol type.
-
-**Returns:** `VpnType | undefined`
-
-### Types
-
-#### `VpnType`
-
-```typescript
-type VpnType = 
-  | 'OpenConnect'
-  | 'OpenVPN' 
-  | 'Ikev2'
-  | 'WireGuard'
-  | 'L2TP'
-  | 'PPTP'
-  | 'SSTP'
-  | 'SoftEther'
-  | 'V2Ray'
-  | 'SSH'
-  | 'SingBox';
-```
-
-#### `ConnectionStatus`
-
-```typescript
-enum ConnectionStatus {
-  DISCONNECTED = '0',
-  DISCONNECTING = '1', 
-  CONNECTING = '2',
-  CONNECTED = '3',
-  INVALID = '-1',
-  ERROR = '-2',
-}
-```
+The API Reference includes:
+- React hooks (`useVpnStatuses`)
+- Standalone functions (`updateVpnStatus`, `getVpnConnectionStatus`, etc.)
+- TypeScript type definitions (`VpnType`, `ConnectionStatus`)
+- Complete usage examples and patterns
 
 ## 📄 License
 
