@@ -1,8 +1,10 @@
 <div align="center">
 
-## 🗼 React Native Control Tower
+<h1>🗼 React Native Control Tower</h1>
 
-*The Ultimate VPN Control & Monitoring Solution for React Native*
+![Gemini_Generated_Image_yivo3gyivo3gyivo-2](https://github.com/user-attachments/assets/a065a676-70b0-4bab-b996-a23ead24bc88)
+
+*VPN Control & Monitoring Solution for React Native*
 
 </div>
 
@@ -16,7 +18,7 @@
 
 <div align="center">
 
-**React Native Control Tower** is a powerful, lightweight library that provides comprehensive VPN protocol management and real-time status monitoring for React Native applications. Built with performance and flexibility in mind, it supports multiple VPN protocols and offers both React hooks and standalone functions for seamless integration.
+**React Native Control Tower** is a lightweight library that provides comprehensive VPN protocol management and real-time status monitoring for React Native applications. Built with flexibility, it supports multiple VPN protocols and offers both React hooks and standalone functions for enhanced integration.
 
 </div>
 
@@ -24,16 +26,13 @@
 
 ## ✨ Features
 
-🚀 **Multi-Protocol Support** - Works with 11+ VPN protocols including WireGuard, OpenVPN, IKEv2, and more  
+🚀 **Multi-Protocol Support** - Keeps track of multiple VPN protocols states  
 ⚡ **Real-time Updates** - Live status monitoring with instant connection state changes  
-🪝 **React Hooks Ready** - Modern React patterns with `useVpnStatuses()` hook  
+🪝 **React Hooks Ready** - Modern React patterns with hooks  
 🔧 **Standalone Functions** - Use outside React components with static functions  
-📊 **Connection Insights** - Get detailed connection status, titles, and active protocol info  
 💪 **TypeScript Support** - Full type safety with comprehensive TypeScript definitions  
 🎯 **Lightweight** - Minimal footprint with zero external dependencies  
 🔄 **Event-Driven** - Efficient listener-based architecture for optimal performance  
-🛡️ **Reliable** - Battle-tested architecture with robust error handling  
-📱 **Cross-Platform** - Works seamlessly on both iOS and Android  
 ⚙️ **Easy Integration** - Simple API design for quick setup and usage  
 
 ## 📦 Installation
@@ -53,11 +52,32 @@ yarn add @aliakhgar1/react-native-control-tower
 ```javascript
 import React from 'react';
 import { View, Text } from 'react-native';
+import * as Wireguard from 'react-native-wireguard';
 import * as ControlTower from '@aliakhgar1/react-native-control-tower';
 
 function VPNStatusComponent() {
-  const { VPNStatusTitle, updateVpnStatus, connectedVpnType } = 
-    ControlTower.useVpnStatuses();
+
+  //React Hooks for Reactive Updates
+   const { 
+    VPNStatuses,           // All VPN statuses object
+    VPNStatus,             // connection status type=> -1, 0, 1, 2,...
+    VPNStatusTitle,        // Human-readable status
+    connectedVpnType,      // Currently connected VPN type
+    updateVpnStatus,       // Function to update status
+    getVpnStatuses         // Function to get all statuses
+  } = ControlTower.useVpnStatuses();
+
+  React.useEffect(() => {
+
+    var WGSub = Wireguard.addWireguardStateChangeListener((WGState) => {
+      //Updating ControlTower state for Wireguard without hook functions.
+      ControlTower.updateVpnStatus('WireGuard', WGState?.state);
+    });
+
+    return () => {
+      WGSub.remove();
+    };
+  }, []);
 
   return (
     <View>
@@ -116,68 +136,6 @@ ConnectionStatus.INVALID       // '-1' - Invalid state
 ConnectionStatus.ERROR         // '-2' - Error occurred
 ```
 
-### 🪝 React Hook Usage
-
-The `useVpnStatuses()` hook provides real-time VPN status monitoring:
-
-```javascript
-import React, { useEffect } from 'react';
-import { View, Text, Button } from 'react-native';
-import * as ControlTower from '@aliakhgar1/react-native-control-tower';
-
-function VPNDashboard() {
-  const { 
-    VPNStatuses,           // All VPN statuses object
-    VPNStatus,             // Overall connection status
-    VPNStatusTitle,        // Human-readable status
-    connectedVpnType,      // Currently connected VPN type
-    updateVpnStatus,       // Function to update status
-    getVpnStatuses         // Function to get all statuses
-  } = ControlTower.useVpnStatuses();
-
-  const connectWireGuard = () => {
-    updateVpnStatus('WireGuard', ControlTower.ConnectionStatus.CONNECTING);
-    // Simulate connection process
-    setTimeout(() => {
-      updateVpnStatus('WireGuard', ControlTower.ConnectionStatus.CONNECTED);
-    }, 2000);
-  };
-
-  const disconnectAll = () => {
-    Object.keys(VPNStatuses).forEach(vpnType => {
-      updateVpnStatus(vpnType, ControlTower.ConnectionStatus.DISCONNECTED);
-    });
-  };
-
-  return (
-    <View style={{ padding: 20 }}>
-      <Text style={{ fontSize: 24, fontWeight: 'bold' }}>
-        VPN Status: {VPNStatusTitle}
-      </Text>
-      
-      {connectedVpnType && (
-        <Text style={{ fontSize: 18, color: 'green' }}>
-          Connected via: {connectedVpnType}
-        </Text>
-      )}
-
-      <View style={{ marginTop: 20 }}>
-        {Object.entries(VPNStatuses).map(([vpnType, status]) => (
-          <Text key={vpnType}>
-            {vpnType}: {status === '3' ? '🟢 Connected' : 
-                      status === '2' ? '🟡 Connecting' : 
-                      status === '1' ? '🟠 Disconnecting' : '🔴 Disconnected'}
-          </Text>
-        ))}
-      </View>
-
-      <Button title="Connect WireGuard" onPress={connectWireGuard} />
-      <Button title="Disconnect All" onPress={disconnectAll} />
-    </View>
-  );
-}
-```
-
 ### 📡 Integration with VPN Libraries
 
 Here's how to integrate with popular VPN libraries:
@@ -224,28 +182,6 @@ OpenVPN.addVpnStateListener((state) => {
 });
 ```
 
-#### IKEv2 Integration
-
-```javascript
-import * as ControlTower from '@aliakhgar1/react-native-control-tower';
-
-// Example with custom IKEv2 implementation
-function setupIKEv2Monitoring() {
-  // Your IKEv2 connection logic here
-  const connectIKEv2 = async () => {
-    try {
-      ControlTower.updateVpnStatus('Ikev2', ControlTower.ConnectionStatus.CONNECTING);
-      
-      // Your connection code here
-      await ikev2Connect();
-      
-      ControlTower.updateVpnStatus('Ikev2', ControlTower.ConnectionStatus.CONNECTED);
-    } catch (error) {
-      ControlTower.updateVpnStatus('Ikev2', ControlTower.ConnectionStatus.ERROR);
-    }
-  };
-}
-```
 
 ### 🔧 Standalone Functions
 
@@ -353,61 +289,6 @@ function MultiProtocolDashboard() {
 }
 ```
 
-#### Background Status Monitoring
-
-```javascript
-import { AppState } from 'react-native';
-import * as ControlTower from '@aliakhgar1/react-native-control-tower';
-
-class VPNBackgroundMonitor {
-  constructor() {
-    this.setupBackgroundMonitoring();
-  }
-
-  setupBackgroundMonitoring() {
-    // Monitor app state changes
-    AppState.addEventListener('change', this.handleAppStateChange);
-    
-    // Set up periodic status checks
-    this.statusInterval = setInterval(() => {
-      this.checkVPNStatuses();
-    }, 5000); // Check every 5 seconds
-  }
-
-  handleAppStateChange = (nextAppState) => {
-    if (nextAppState === 'active') {
-      // App came to foreground, refresh all statuses
-      this.refreshAllStatuses();
-    }
-  };
-
-  checkVPNStatuses() {
-    const currentStatuses = ControlTower.getVpnStatuses();
-    const connectedVPN = ControlTower.getConnectedVpnType();
-    
-    if (connectedVPN) {
-      console.log(`Background check: ${connectedVPN} is connected`);
-      // You could send notifications, update UI, etc.
-    }
-  }
-
-  refreshAllStatuses() {
-    // Implement your logic to check actual VPN states
-    // and update Control Tower accordingly
-    console.log('Refreshing all VPN statuses...');
-  }
-
-  cleanup() {
-    if (this.statusInterval) {
-      clearInterval(this.statusInterval);
-    }
-    AppState.removeEventListener('change', this.handleAppStateChange);
-  }
-}
-
-// Usage
-const monitor = new VPNBackgroundMonitor();
-```
 
 ## 📖 API Reference
 
@@ -420,7 +301,7 @@ Returns an object with the following properties:
 | Property | Type | Description |
 |----------|------|-------------|
 | `VPNStatuses` | `Record<VpnType, ConnectionStatus>` | Object containing all VPN statuses |
-| `VPNStatus` | `ConnectionStatus` | Overall connection status |
+| `VPNStatus` | `ConnectionStatus` | connection status type |
 | `VPNStatusTitle` | `string \| undefined` | Human-readable status title |
 | `connectedVpnType` | `VpnType \| undefined` | Currently connected VPN protocol |
 | `updateVpnStatus` | `Function` | Function to update VPN status |
@@ -492,20 +373,6 @@ enum ConnectionStatus {
 }
 ```
 
-## 🤝 Contributing
-
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
-
 ## 📄 License
 
 MIT © [Ali Akhgar](https://github.com/AliAkhgar)
-
----
-
-<div align="center">
-
-**Made with ❤️ for the React Native community**
-
-[🐛 Report Bug](https://github.com/AliAkhgar/react-native-control-tower/issues) • [✨ Request Feature](https://github.com/AliAkhgar/react-native-control-tower/issues) • [💬 Discussions](https://github.com/AliAkhgar/react-native-control-tower/discussions)
-
-</div>
